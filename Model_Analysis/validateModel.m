@@ -1,11 +1,11 @@
 function [pred, actual, spRho] = validateModel(subclassConcs, fcrMFI, fcr)
-%VALIDATE MODEL Run the model and compare output to the FcR assay
+%VALIDATE MODEL Run the model and compare output to the FcgR assay
 %   INPUT:
-%       subclasConcs: array (nVaccinees, 4)
+%       subclassConcs: array (nVaccinees, 4)
 %           Array containing the converted subclass concentrations for each
 %           of the vaccinees
 %       fcrMFI: vector (nVaccinees, 1)
-%           Vector containing the MFIs for the FcR of choise for the
+%           Vector containing the MFIs for the FcR of choice for the
 %           validation
 %       fcr: string ["FcgRIIA-131H", "FcgRIIA-131R"]
 %           Dictates which FcgR we are using for parameter collection
@@ -13,9 +13,10 @@ function [pred, actual, spRho] = validateModel(subclassConcs, fcrMFI, fcr)
 %       pred: vector (nVaccinees)
 %           Model predicted FcR complex formation (in nM)
 %       actual: vector (nVaccinees)
-%           Measured FcR complex formation values
+%           Measured FcR complex formation values (in MFI)
 %       spRho: double
-%           Spearman correlation coefficient of models predictive accuracy
+%           Spearman rho correlation coefficient of the predicted and
+%           actual
 
 
 %% Collect Background data

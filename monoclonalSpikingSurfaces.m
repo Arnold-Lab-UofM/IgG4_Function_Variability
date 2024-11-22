@@ -69,12 +69,12 @@ igg4_base_line_2ah = zeros(1, length(igg1_range));
 igg4_base_line_2ar = zeros(1, length(igg1_range));
 igg4_base_value = ones(1, length(igg1_range)) * baseParams2AH(20);
 
-% Low spike line
+% Small spike line
 igg4_spike_line_2ah = zeros(1, length(igg1_range));
 igg4_spike_line_2ar = zeros(1, length(igg1_range));
 igg4_spike_value = ones(1, length(igg1_range)) * (baseParams2AH(20) + sIgG4Spike);
 
-% High Spike line
+% Large Spike line
 igg4_high_spike_line_2ah = zeros(1, length(igg1_range));
 igg4_high_spike_line_2ar = zeros(1, length(igg1_range));
 igg4_high_spike_value = ones(1, length(igg1_range)) * (baseParams2AH(20) + lIgG4Spike);
