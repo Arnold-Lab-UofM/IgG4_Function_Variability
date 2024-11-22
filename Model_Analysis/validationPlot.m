@@ -1,9 +1,9 @@
 function [ax] = validationPlot(pred, actual, spRho, fcr, logScale, funcAssay)
 % VALIDATION PLOT Show the output of a model validation run
 %   INPUT:
-%       Pred: Vector (nVaccinees)
+%       Pred: Vector (len = nVaccinees)
 %           Model predicted results
-%       Actual: Vector (nVaccinees)
+%       Actual: Vector (len = nVaccinees)
 %           Measured results (either functional assay or multiplex MFIs)
 %       spRho: double
 %           Spearman correlation coefficient between pred and actual
@@ -11,10 +11,12 @@ function [ax] = validationPlot(pred, actual, spRho, fcr, logScale, funcAssay)
 %           Name of the Fc receptor for graph labeling
 %       log: boolean
 %           If true, log scales the axes
-%       funcAssay: string
-%           Name of the functional assay if its being used for testing
+%       funcAssay: boolean = false
+%           Name of the functional assay if its being used for testing.
+%           Default argument is false.
 %   OUTPUT:
-%       
+%       ax: MATLAB axis object
+%           A handle for the plot object (not required to see the graph)
 
 %% Input checking
 isFuncAssay = true;
@@ -41,7 +43,7 @@ if (logScale)
     ax.YScale = 'log';
 end
 
-% Text
+% Placing the Spearman Rho on the plot
 if logScale
     NW = [min(xlim) max(ylim)] + [min(xlim) -diff(ylim)]*.05;
     rhoString = sprintf("%1.3f", spRho);

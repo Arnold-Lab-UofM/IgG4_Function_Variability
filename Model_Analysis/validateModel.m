@@ -10,9 +10,9 @@ function [pred, actual, spRho] = validateModel(subclassConcs, fcrMFI, fcr)
 %       fcr: string ["FcgRIIA-131H", "FcgRIIA-131R"]
 %           Dictates which FcgR we are using for parameter collection
 %   OUTPUT:
-%       pred: vector (nVaccinees)
+%       pred: vector (len = nVaccinees)
 %           Model predicted FcR complex formation (in nM)
-%       actual: vector (nVaccinees)
+%       actual: vector (len = nVaccinees)
 %           Measured FcR complex formation values (in MFI)
 %       spRho: double
 %           Spearman rho correlation coefficient of the predicted and

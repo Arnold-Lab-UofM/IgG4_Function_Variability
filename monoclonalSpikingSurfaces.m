@@ -1,5 +1,6 @@
-%%% MONOCLONAL SPIKING SURFACES
-%%% This script generates the landscape of responses for 
+%%% MONOCLONAL SPIKING SURFACES (Figure 3U and Figure 3V)
+%%% This script generates the landscape of responses across a range of
+%%% initial IgG1 and IgG4 concentrations
 %%% Author: Robert Theisen, Arnold Lab, University of Michigan, Ann Arbor
 
 %% Housekeeping
@@ -7,11 +8,7 @@ clear all;
 close all;
 clc;
 
-%% Set overarching parameters
-% Determining the antigen specific subclass titers for import
-ag = "Trimer";
-var = "WT";
-
+%% Set  parameters
 % Setting the concentration multiplier to proportonally adjust the input
 % concentrations and the associated spikes
 concMultiplier = 25;
@@ -20,9 +17,11 @@ lIgG4Spike = .2*concMultiplier;
 
 
 %% Import pre-converted IgG titer data
+% Pull from csv file
 dfConverted = importConvertedSpiking("WT", "Trimer", false);
 
-% Calculate the median concentrations as a baseline for the surfaces
+% Calculate the median concentrations as a baseline for the surfaces and
+% apply the concentration multiplier
 baselineMedians = median(dfConverted{:, ["IgG1 WT Trimer", "IgG2 WT Trimer", "IgG3 WT Trimer", "IgG4 WT Trimer"]})*concMultiplier;
 
 %% Establish parameter ranges
@@ -43,7 +42,7 @@ IIAR_Surface = zeros(50, 100);
 % Iteration
 for i = 1:length(igg1_range)
     for j = 1:length(igg4_range)
-        % FcgRIIA-H
+        % FcgRIIA-131H
         fcr = "FcgRIIA-131H";
         tempParams = baseParams2AH;
         tempParams(17) = igg1_range(i);
@@ -51,7 +50,7 @@ for i = 1:length(igg1_range)
         [yBase, steadystate, complexes] = Simulate(tempParams, paramNames, complexNames, fcr);
         IIAH_Surface(i, j) = yBase(33);
 
-        % FcgRIIA-R
+        % FcgRIIA-131R
         fcr = "FcgRIIA-131R";
         tempParams = baseParams2AR;
         tempParams(17) = igg1_range(i);
@@ -63,7 +62,7 @@ for i = 1:length(igg1_range)
     fprintf("Completed Cycle %i/50\n", i);
 end
 
-%% Draw lines equivalent to the baseline and each of the IGG4 spikes
+%% Draw lines equivalent to the baseline and each of the IgG4 spikes
 % Base line
 igg4_base_line_2ah = zeros(1, length(igg1_range));
 igg4_base_line_2ar = zeros(1, length(igg1_range));
@@ -118,7 +117,7 @@ end
 % Colormap loading
 red_white_blue = load("rwb_cmap.mat");
 
-% 2AH figure (Figure 3U)
+% FcgRIIA-131H figure (Figure 3U)
 figure;
 surf(igg4_range, igg1_range, IIAH_Surface, CData=dfdx);
 colormap(red_white_blue.USA_2AH);
@@ -133,12 +132,12 @@ hold off;
 xlabel("IgG4 Concentration (nM)");
 ylabel("IgG1 Concentration (nM)");
 zlabel("Complex Formation (nM)");
-%title("FcγRIIaH")
+title("FcgRIIA-131H");
 set(gca, 'XScale', 'log', 'YScale', 'log');
 zlim([0, .25]);
 
 
-% FcgR2AR figure (Figure 3V)
+% FcgRIIA-131R figure (Figure 3V)
 figure;
 surf(igg4_range, igg1_range, IIAR_Surface, CData=dfdx1);
 colormap(red_white_blue.USA_2AH);
@@ -153,6 +152,6 @@ hold off;
 xlabel("IgG4 Concentration (nM)");
 ylabel("IgG1 Concentration (nM)");
 zlabel("Complex Formation (nM)");
-%title("FcγRIIaR")
+title("FcγRIIA-131R")
 set(gca, 'XScale', 'log', 'YScale', 'log');
 zlim([0, .25]);

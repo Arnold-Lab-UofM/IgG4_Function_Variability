@@ -1,13 +1,14 @@
 function [dydt] = ODEs(t,y,params)
 % ODEs defines the system of ODEs describing the model
 
-f1 = params(1);%env-IgG1 kon
+%% Copy the parameter values
+f1 = params(1);%ant-IgG1 kon
 r1 = params(2);%koff
-f2 = params(3);%env-IgG2
+f2 = params(3);%ant-IgG2
 r2 = params(4);
-f3 = params(5);%env-IgG3
+f3 = params(5);%ant-IgG3
 r3 = params(6);
-f4 = params(7);%env-IgG4
+f4 = params(7);%ant-IgG4
 r4 = params(8);
 f5 = params(9);%IgG1-FcR
 r5 = params(10);
@@ -17,13 +18,14 @@ f7 = params(13);%IgG3-FcR
 r7 = params(14);
 f8 = params(15);%IgG4-FcR
 r8 = params(16);
-g1tot    = params(17);%mM 
-g2tot    = params(18);%mM 
-g3tot    = params(19);%mM 
-g4tot    = params(20);%mM 
-etot    = params(21);%mM 
-ftot    = params(22);%mM 
+g1tot    = params(17);%nM 
+g2tot    = params(18);%nM 
+g3tot    = params(19);%nM 
+g4tot    = params(20);%nM 
+etot    = params(21);%nM 
+ftot    = params(22);%nM
 
+%% Copy the intermediate complex values at each time step
 e1 = y(1); 
 e2 = y(2); 
 e3 = y(3); 
@@ -49,6 +51,7 @@ fe33 = y(22);
 fe34 = y(23);
 fe44 = y(24);
 
+%% Copy parameters into defined rate constants
 k1f = 2*f1;
 k1r = r1;
 k2f = 2*f2;
@@ -110,7 +113,7 @@ k29r = (r7+r8)/2;
 k30f = (f8+f8)/2; 
 k30r = (r8+r8)/2;
 
-% Conservation equations
+%% Conservation equations
 g1 = g1tot-(e1+2*e11+e12+e13+e14+2*fe11+fe12+fe13+fe14);
 g2 = g2tot-(e2+2*e22+e12+e23+e24+2*fe22+fe12+fe23+fe24);
 g3 = g3tot-(e3+2*e33+e23+e13+e34+2*fe33+fe23+fe13+fe34);
@@ -119,7 +122,7 @@ e = etot-(e1+e2+e3+e4+e11+e12+e13+e14+e22+e23+e24+e33+e34+e44+fe11+fe12+...
     fe13+fe14+fe22+fe23+fe24+fe33+fe34+fe44);      
 f = ftot-(fe11+fe12+fe13+fe14+fe22+fe23+fe24+fe33+fe34+fe44);
                    
-% Reaction rates
+%% Reaction rates
 react1  = k1f*g1*e-k1r*e1;
 react2  = k2f*g2*e-k2r*e2;
 react3  = k3f*g3*e-k3r*e3;
@@ -151,7 +154,7 @@ react28 = k28f*e33*f-k28r*fe33;
 react29 = k29f*e34*f-k29r*fe34;
 react30 = k30f*e44*f-k30r*fe44;
 
-% Differential equations;
+%% Differential equations;
 de1 = react1-react5-react6-react8-react10;
 de2 = react2-react7-react12-react13-react15;
 de3 = react3-react9-react14-react17-react18;
@@ -177,12 +180,11 @@ dfe33 = react28;
 dfe34 = react29;
 dfe44 = react30;
 
-% [uM/s] product
+%% [nM/s] product
 dydt=[de1;de2;de3;de4;de11;de12;de13;de14;de22;de23;de24;de33;de34;de44;...
     dfe11;dfe12;dfe13;dfe14;dfe22;dfe23;dfe24;dfe33;dfe34;dfe44];  
-% Reassemble differential equations
 
-% Manipulation of global variables for storing fluxes, intermediate variables
+%% Manipulation of global variables for storing fluxes, intermediate variables
 global tStep tArray varArray;
 if t > tArray(tStep)            % Roughly eliminates data from rejected time steps
     tStep = tStep + 1;  
