@@ -7,14 +7,14 @@ function [pred, actual, spRho] = validateModel(subclassConcs, fcrMFI, fcr)
 %       fcrMFI: vector (nVaccinees, 1)
 %           Vector containing the MFIs for the FcR of choise for the
 %           validation
-%       fcr: string ("FcgRIIA-131H", "FcgRIIIA-158V")
+%       fcr: string ["FcgRIIA-131H", "FcgRIIA-131R"]
 %           Dictates which FcgR we are using for parameter collection
 %   OUTPUT:
 %       pred: vector (nVaccinees)
 %           Model predicted FcR complex formation (in nM)
 %       actual: vector (nVaccinees)
 %           Measured FcR complex formation values
-%       spRho
+%       spRho: double
 %           Spearman correlation coefficient of models predictive accuracy
 
 
@@ -44,12 +44,5 @@ end
 
 %% Postprocessing
 actual = fcrMFI;
-spRho1 = corr(pred, actual, type="Spearman");
-logSpRho = corr(log10(pred), log10(actual), type="Spearman");
-perRho = corr(pred, actual, type="Pearson");
-logPerRho = corr(log10(pred), log10(actual), type="Pearson");
-%spRho = [spRho1; logSpRho; perRho; logPerRho];
-spRho = spRho1;
-%fprintf(fcr + " Spearman Rho: %1.3f %1.3f %1.3f %1.3f\n", spRho');
-
+spRho = corr(pred, actual, type="Spearman");
 end
