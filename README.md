@@ -18,3 +18,6 @@ University of Michigan, Ann Arbor<br>
 
 ## Figure 3U and Figure 3V
 * Run monoclonalSpikingSurfaces.m while in the base folder
+
+## Current Release Link
+[![DOI](https://zenodo.org/badge/892287847.svg)](https://doi.org/10.5281/zenodo.14231188)
